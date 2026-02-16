@@ -77,3 +77,4 @@ Each example includes:
 
 - If `deps/scetool/bin/scetool.exe` is missing, signing is skipped (build still succeeds).
 - Current default fallback title id in loader source is `NPUB31419` (`MODLOADER_TITLE_ID` macro).
+- Feel free to open an issue (or pull request) if you find or fix any issues!
