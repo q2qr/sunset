@@ -7,33 +7,48 @@ Sunset is a PS3 mod loader for Minecraft SPRX mods.
 ## Output
 
 - Project: `sunset`
-- Built artifact: `PS3_Debug/sunset.prx`
+- Built artifact: `Sunset/PS3_Debug/sunset.prx`
+- Signed artifact: `Sunset/PS3_Debug/sunset.sprx`
 
 ## Quick Build
 
 ### Windows
 
 ```bat
-build-sunset.bat
+Sunset\build-sunset.bat
 ```
 
 Or specify config:
 
 ```bat
-build-sunset.bat Release
+Sunset\build-sunset.bat Release
 ```
 
 ### Shell (Git Bash/WSL)
 
 ```sh
-./build-sunset.sh
+./Sunset/build-sunset.sh
 ```
 
 Or:
 
 ```sh
-./build-sunset.sh Release
+./Sunset/build-sunset.sh Release
 ```
+
+`build-sunset.sh` now always:
+
+- builds `.prx`
+- signs `.prx` to `.sprx` using `scetool`
+
+## Signing Setup
+
+Default paths used by shell scripts:
+
+- `SCETOOL_EXE=C:/Users/liams/Downloads/scetool/scetool.exe`
+- `SCETOOL_WORK_DIR=C:/Users/liams/Videos/sunset/dependencies/scetool/bin`
+
+`SCETOOL_WORK_DIR` must contain `data/keys`, `data/ldr_curves`, and `data/vsh_curves`.
 
 ## Environment
 
@@ -48,7 +63,7 @@ Override these if your SDK is installed elsewhere.
 
 Sunset scans:
 
-- `/dev_hdd0/game/<TITLEID>/USRDIR/mods/`
+- `/dev_hdd0/tmp/sunsetml/mods/`
 
 Supported inputs:
 
@@ -57,13 +72,13 @@ Supported inputs:
 
 `.sunset` packages are extracted to:
 
-- `/dev_hdd0/tmp/ps3_mc_modloader/`
+- `/dev_hdd0/tmp/sunsetml/cache/`
 
 ## Example Mods
 
-Example projects are now located at:
+Example projects are located in:
 
-- `https://github.com/q2qr/SunsetExampleMods`
+- `C:\Users\liams\Videos\SunsetExampleMods`
 
 Each example includes:
 
@@ -73,7 +88,8 @@ Each example includes:
 - `build.bat`
 - `build.sh`
 
+Each example `build.sh` now builds `.prx`, signs to `.sprx`, and packs `.sunset`.
+
 ## Notes
 
-- If `deps/scetool/bin/scetool.exe` is missing, signing is skipped (build still succeeds).
 - Current default fallback title id in loader source is `NPUB31419` (`MODLOADER_TITLE_ID` macro).

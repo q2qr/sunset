@@ -7,7 +7,7 @@
 
 static const char* kSunsetMagic = "SUNSETPK";
 static const uint32_t kSunsetVersion = 1;
-static const char* kExtractDir = "/dev_hdd0/tmp/ps3_mc_modloader/";
+static const char* kExtractDir = "/dev_hdd0/tmp/sunsetml/cache/";
 
 static void SafeCopy(char* dst, size_t dstSize, const char* src)
 {
@@ -249,7 +249,7 @@ bool ExtractSunsetPackage(const char* packagePath, char* outSprxPath, size_t out
         uint32_t entryCount = ReadU32LE(data + 12);
         uint64_t offset = 16;
 
-        if (!EnsureDirectory("/dev_hdd0/tmp") || !EnsureDirectory("/dev_hdd0/tmp/ps3_mc_modloader")) {
+        if (!EnsureDirectory("/dev_hdd0/tmp") || !EnsureDirectory("/dev_hdd0/tmp/sunsetml") || !EnsureDirectory("/dev_hdd0/tmp/sunsetml/cache")) {
             break;
         }
 

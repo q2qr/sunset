@@ -137,12 +137,7 @@ void ModLoader_Init(void)
 {
     MemoryAPI_Init();
 
-    char titleId[16];
-    memset(titleId, 0, sizeof(titleId));
-    SafeCopy(titleId, sizeof(titleId), MODLOADER_TITLE_ID);
-
-    char modPath[256];
-    snprintf(modPath, sizeof(modPath), "/dev_hdd0/game/%s/USRDIR/mods/", titleId);
+    const char* modPath = "/dev_hdd0/tmp/sunsetml/mods/";
 
     char paths[MAX_MODS][256];
     int count = EnumerateModEntries(modPath, paths, MAX_MODS);

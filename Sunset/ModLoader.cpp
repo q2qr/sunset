@@ -15,10 +15,8 @@ void ModLoader_Init() {
     g_pid = GetCurrentPid();
 
     char modPath[256];
-    char titleId[16];
-    sys_game_get_title_id(titleId);
     snprintf(modPath, sizeof(modPath),
-        "/dev_hdd0/game/%s/USRDIR/mods/", titleId);
+        "/dev_hdd0/tmp/sunsetml/mods/");
 
     ScanAndLoadMods(modPath);
 }
