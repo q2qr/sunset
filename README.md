@@ -74,6 +74,15 @@ Supported inputs:
 
 - `/dev_hdd0/tmp/sunsetml/cache/`
 
+Runtime logs are appended to:
+
+- `/dev_hdd0/tmp/sunsetml/logs/sunset.log`
+
+Each game launch writes a new `Sunset Session Start` block with mod scan/load events and shutdown events.
+
+Startup now shows a Kagura-style progress dialog while Sunset initializes and installs hooks.
+If a file in the mods folder is not a valid Sunset mod module, Sunset now rejects it and logs the rejection instead of continuing with unsafe callbacks.
+
 ## Example Mods
 
 Example projects are located in:
@@ -92,4 +101,4 @@ Each example `build.sh` now builds `.prx`, signs to `.sprx`, and packs `.sunset`
 
 ## Notes
 
-- Current default fallback title id in loader source is `NPUB31419` (`MODLOADER_TITLE_ID` macro).
+- Current default fallback title id in loader source is `BLUS31426` (`MODLOADER_TITLE_ID` macro).
