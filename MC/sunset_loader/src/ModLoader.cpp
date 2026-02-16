@@ -58,8 +58,8 @@ void ModLoader_Init(void)
     CellFsDirent entry;
     uint64_t nread = 0;
     while (g_loadedCount < MAX_MODS &&
-           cellFsReaddir(dirFd, &entry, &nread) == CELL_FS_SUCCEEDED &&
-           nread > 0) {
+        cellFsReaddir(dirFd, &entry, &nread) == CELL_FS_SUCCEEDED &&
+        nread > 0) {
         if (entry.d_name[0] == '.') {
             continue;
         }

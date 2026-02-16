@@ -1,9 +1,78 @@
+#pragma once
+#pragma comment(lib, "libhttp_stub.a")
+#pragma comment(lib, "libhttp_util_stub.a")
+#pragma comment(lib, "libnet_stub.a")
+#pragma comment(lib, "netctl_stub")
+#pragma comment(lib, "libsysutil_stub.a")
+#pragma comment(lib, "libc.a")
+#pragma comment(lib, "libstdc++.a")
+#pragma comment(lib, "libstdc++_stub.a")
+#pragma comment(lib, "libsn.a")
+#pragma comment(lib, "libm.a")
+#pragma comment(lib, "libio_stub.a")
+#pragma comment(lib, "liblv2_stub.a")
+#pragma comment(lib, "libfs_stub.a")
+
+#pragma region "includes"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <cellstatus.h>
 #include <sys/prx.h>
-#include <libpsutil.h>
-#include <sysutil/sysutil_msgdialog.h>
+#include <cell/sysmodule.h>
+#include <sys/process.h>
+#include <sys/ppu_thread.h>
+#include <sys/syscall.h>
+#include <sys/tty.h>
+#include <ppu_intrinsics.h>
+#include <ctype.h>
+#include <sys/timer.h>
+#include <fastmath.h>
+#include <cell/pad.h>
+#include <sysutil\sysutil_msgdialog.h>
+#include <sys\sys_time.h>
+#include <time.h>
+#include <cell/cell_fs.h>
+#include <cell/http.h>
+#include <sysutil/sysutil_oskdialog.h>
+#include <sys\socket.h>
+#include <netinet\in.h>
+#include <arpa\inet.h>
+#include <sys/types.h>
+#include <netdb.h>
+#include <netex/net.h>
+#include <netex/errno.h>
+#include <inttypes.h>  
+#include <sys/memory.h>
+#include <stdarg.h>
+#include <cstdlib>
+#include <sys/time_util.h>
+#include <assert.h>
+#include <sys/return_code.h>
+#include <stddef.h>
+#include <math.h>
+#include <typeinfo>
+#include <vector>
+#include <locale.h>
+#include <cell/error.h>
+#include <sys/paths.h>
+#include <net\if_dl.h>
+#include <cell/fs/cell_fs_errno.h>
+#include <cell/fs/cell_fs_file_api.h>
+#include <sys/fs.h>
+#include <sys/ss_get_open_psid.h>
+#include <netex\libnetctl.h>
+#pragma comment(lib, "net_stub")
+#include <cstddef>
 
+#include "dialog.h"
 #include "sunset_loader/include/ModLoader.h"
+
+#include <sys/stat.h>
+#include <sys/fs_external.h>
+#include <pthread.h>
+#pragma endregion
+
 
 SYS_MODULE_INFO(sunset_loader, 0, 1, 0);
 SYS_MODULE_START(_sunset_loader_prx_entry);
@@ -17,74 +86,15 @@ extern "C" int _sunset_loader_export(void)
     return CELL_OK;
 }
 
-static bool g_startupProgressOpen = false;
-static int g_startupProgressValue = 0;
-
-static void StartupProgressOpen(void)
-{
-    if (g_startupProgressOpen) {
-        return;
-    }
-
-    unsigned int type = CELL_MSGDIALOG_TYPE_SE_TYPE_NORMAL |
-                        CELL_MSGDIALOG_TYPE_BUTTON_TYPE_NONE |
-                        CELL_MSGDIALOG_TYPE_DISABLE_CANCEL_ON |
-                        CELL_MSGDIALOG_TYPE_DEFAULT_CURSOR_NONE |
-                        CELL_MSGDIALOG_TYPE_PROGRESSBAR_SINGLE;
-
-    int rc = cellMsgDialogOpen2(type, "Sunset\nMod Loader Startup", 0, 0, 0);
-    if (rc != CELL_OK) {
-        return;
-    }
-
-    g_startupProgressOpen = true;
-    g_startupProgressValue = 0;
-}
-
-static void StartupProgressStep(const char* phase, int targetPercent)
-{
-    if (!g_startupProgressOpen) {
-        return;
-    }
-
-    if (phase && phase[0]) {
-        cellMsgDialogProgressBarSetMsg(CELL_MSGDIALOG_PROGRESSBAR_INDEX_SINGLE, phase);
-    }
-
-    if (targetPercent < g_startupProgressValue) {
-        targetPercent = g_startupProgressValue;
-    }
-    if (targetPercent > 100) {
-        targetPercent = 100;
-    }
-
-    int delta = targetPercent - g_startupProgressValue;
-    if (delta > 0) {
-        cellMsgDialogProgressBarInc(CELL_MSGDIALOG_PROGRESSBAR_INDEX_SINGLE, (uint32_t)delta);
-        g_startupProgressValue = targetPercent;
-    }
-}
-
-static void StartupProgressClose(void)
-{
-    if (!g_startupProgressOpen) {
-        return;
-    }
-
-    StartupProgressStep("Startup complete", 100);
-    cellMsgDialogClose(500);
-    g_startupProgressOpen = false;
-    g_startupProgressValue = 0;
-}
 
 extern "C" int _sunset_loader_prx_entry(void)
 {
-    StartupProgressOpen();
-    StartupProgressStep("Initializing Sunset...", 50);
+    Dialog::msgdialog_mode = Dialog::MODE_RUNNING;
+    Dialog::ProgressBar("Sunset", "Initializing Sunset...", 20);
+    Dialog::End();
 
     ModLoader_Init();
 
-    StartupProgressClose();
     return SYS_PRX_RESIDENT;
 }
 
